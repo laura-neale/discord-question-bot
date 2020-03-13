@@ -1,6 +1,7 @@
 import _thread
 import os
 import random
+import asyncio
 
 import discord
 from dotenv import load_dotenv
@@ -19,19 +20,17 @@ with open('questions') as f:
 @client.event
 async def on_ready(): #when a connection to discord is established
     print(f'{client.user} has connected to Discord!')
+
+    #currently doesnt' work
+    await run_scheduled_questions()
+
+
+async def run_scheduled_questions():
+    await client.wait_until_ready()
     channel = client.get_channel(687940638314070057)
-    print(f'channel is {channel}')
-
-    #trying to thread it
-    #_thread.start_new_thread(run_scheduled_questions, (channel,))
-
-    #this doesn't let it respond to user input
-    run_scheduled_questions(channel).send(None)
-
-
-async def run_scheduled_questions(channel):
-    print("starting schedule")
+    print(f'starting schedule on channel {channel}')
     while True:
+    #while not client.is_closed:
         print("checking scheduling")
         hour = datetime.now().hour
         if hour == 9 or hour == 16 or hour == 11:
@@ -42,15 +41,15 @@ async def run_scheduled_questions(channel):
 
 @client.event
 async def on_message(message):
-    print("message received")
     if message.author != client.user and message.content.lower() == "hey bot":
-        print("sending message")
+        print("message received")
         await(send_message(message.channel))
 
 
 async def send_message(channel):
+    print("sending message")
     response = random.choice(questions)
     await(channel.send(response))
 
-
+client.loop.create_task(run_scheduled_questions())
 client.run(TOKEN) #runs the bot with the token
