@@ -51,7 +51,7 @@ async def on_message(message): # when a message is sent, in any channel or a dm 
         await process_dm(message)
 
 
-async def process_dm(message, text):
+async def process_dm(message):
     print("DM received")
     if "?" in message.content:
         insert_question(message.content)
