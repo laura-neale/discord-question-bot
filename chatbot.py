@@ -10,7 +10,7 @@ from questiondb import insert_question, select_question
 
 load_dotenv() #loads the .env file environment variables
 TOKEN = os.getenv('DISCORD_TOKEN')
-channel_id = int(os.getenv('DISCORD_CHANNEL'))
+CHANNEL_ID = int(os.getenv('DISCORD_CHANNEL'))
 
 client = discord.Client() #represents a connection to discord
 
@@ -25,13 +25,12 @@ async def on_ready():  # when a connection to discord is established
 # TODO this doesn't work multi-threaded
 async def run_scheduled_questions():
     await client.wait_until_ready()
-    channel = client.get_channel(channel_id)
+    channel = client.get_channel(CHANNEL_ID)
     print(f'starting schedule on channel {channel}')
     while not client.is_closed():
         print("checking scheduling")
         now = datetime.now()
-        #if now.minute == 0 and now in schedule_hours:
-        if now.hour in schedule_hours:
+        if now.minute == 5 and now.hour in schedule_hours:
                 print("messaging on schedule")
                 await(send_question(channel))
         await(asyncio.sleep(60))
@@ -62,6 +61,5 @@ async def send_question(channel):
     print("sending message")
     response = select_question()
     await(channel.send(response))
-
 
 client.run(TOKEN)  # runs the bot with the token
