@@ -1,5 +1,11 @@
 import psycopg2
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+HOST = os.getenv('DB_HOST')
+DATABASE = os.getenv('DB_NAME')
+USER = os.getenv('USER')
 
 def select_question():
     conn = connect_to_db()
@@ -14,7 +20,7 @@ def select_question():
 
 
 def connect_to_db():
-    return psycopg2.connect(host="doris.devserver0.btn1.bwcom.net", database="brandwatch-crawler.db", user="brandwatch")
+    return psycopg2.connect(host=HOST, database=DATABASE, user=USER)
 
 
 def insert_question(q):
