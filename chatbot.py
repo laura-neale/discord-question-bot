@@ -28,7 +28,6 @@ async def run_scheduled_questions():
     channel = client.get_channel(CHANNEL_ID)
     print(f'starting schedule on channel {channel}')
     while not client.is_closed():
-        print("checking scheduling")
         now = datetime.now()
         if now.minute == 5 and now.hour in schedule_hours:
                 print("messaging on schedule")
