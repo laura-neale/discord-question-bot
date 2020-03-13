@@ -16,4 +16,4 @@ It uses a .env file with, and needs the properties "DISCORD_CHANNEL" and "DISCOR
 
 **change the schedule**: type `set schedule: ` followed by a comma-separated list of the hours it should post at, e.g. `set schedule: 10, 15, 18` (e.g. for 10 am, 3 pm and 6 pm)'
 
-**submit a question**: dm the bot with your question. Note: anything you dm the bot with will be considered a question.
+**submit a question**: dm the bot with your question. Include a ? in the message, so the bot knows it's a question

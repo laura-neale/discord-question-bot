@@ -53,8 +53,11 @@ async def on_message(message):
         await message.channel.send(f"got it, I'll run at {schedule_hours}")
     elif isinstance(message.channel, discord.DMChannel):
         print("DM received")
-        insert_question(message.content)
-        await(message.channel.send("Ok, I've added that to my list"))
+        if "?" in text:
+            insert_question(message.content)
+            await(message.channel.send("Ok, I've added that to my list"))
+        else:
+            await(message.channel.send("I don't understand that. If you want to add a question to the list, include a ? in it"))
 
 
 async def send_question(channel):
