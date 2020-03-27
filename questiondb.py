@@ -26,6 +26,11 @@ def connect_to_db():
 def insert_question(q):
     conn = connect_to_db()
     cur = conn.cursor()
-    cur.execute("INSERT INTO discord_chatbot_questions (question, user_submitted) VALUES (%s, true)", (q,))
+    cur.execute("SELECT count(*) FROM discord_chatbot_questions WHERE question=%s", (q,))
+    count = cur.fetchone()
+    if count > 0:
+        cur.execute("UPDATE discord_chatbot_questions SET last_asked = null WHERE question=%s", (q,))
+    else:
+        cur.execute("INSERT INTO discord_chatbot_questions (question, user_submitted) VALUES (%s, true)", (q,))
     conn.commit()
     cur.close
