@@ -17,11 +17,15 @@ client = discord.Client()  # represents a connection to discord
 schedule_hours = [9, 16]  # hours of the day, 0 to 23
 schedule_days = [1, 2, 3, 4, 5]  # ISO week days
 
+connected = False
 
 @client.event
 async def on_ready():  # when a connection to discord is established
     print(f'{client.user} has connected to Discord!')
-    client.loop.create_task(run_scheduled_questions())
+    global connected
+    if not connected:
+        client.loop.create_task(run_scheduled_questions())
+        connected = True
 
 
 async def run_scheduled_questions():
